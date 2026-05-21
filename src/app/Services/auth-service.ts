@@ -1,5 +1,6 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, signal, computed, inject } from '@angular/core';
 import { Registered, User } from '../Types/user';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +12,7 @@ export class AuthService {
 
   public currentUser = computed(() => this.currentUserSignal());
 
+  router: Router = inject(Router);
   constructor() {
     const storedUser = localStorage.getItem('currentUser');
     if (storedUser) {
@@ -28,7 +30,11 @@ export class AuthService {
     if (!this.validateCredentials(email, password)) {
       return;
     }
+    const storedUser = this.getStoredUsers().find((u) => u.email === email);
+
     const user: Partial<User> = {
+      username: storedUser?.username,
+      email,
       token: 'fake-jwt-token',
     };
 
@@ -45,6 +51,8 @@ export class AuthService {
 
     // Mise à jour du signal
     this.currentUserSignal.set(null);
+
+    this.router.navigate(['/auth', 'signIn']);
   }
 
   register(userData: Registered): boolean {

@@ -10,12 +10,10 @@ import { AuthService } from '../../Services/auth-service';
 })
 export class Header {
   authService = inject(AuthService);
-  router: Router = inject(Router);
 
   isAuthenticated = this.authService.isAuthenticated;
 
   logout() {
     this.authService.logout();
-    this.router.navigate(['/auth', 'signIn']);
   }
 }

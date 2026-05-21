@@ -48,7 +48,7 @@ export class AuthPage {
         this.router.navigate(['/']);
         return;
       }
-      this.authService.register({email, password});
+      this.authService.register({email, password, username});
       this.router.navigate(['/auth', 'signIn']);
     }
   }
