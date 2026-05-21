@@ -1,4 +1,24 @@
-export type SearchResult = {
+export type Video = {
+  kind: string;
+  etag: string;
+  id: string;
+  snippet: {
+    publishedAt: string;
+    channelId: string;
+    title: string;
+    description: string;
+    thumbnails: {
+      [key: string]: {
+        url: string;
+        width: number;
+        height: number;
+      };
+    };
+    channelTitle: string;
+  };
+};
+
+export interface SearchResult {
   kind: string;
   etag: string;
   id: {
@@ -32,5 +52,5 @@ export interface YoutubeSearchResponse {
     totalResults: number;
     resultsPerPage: number;
   };
-  items: SearchResult[];
+  items: Video[];
 }

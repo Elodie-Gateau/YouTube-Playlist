@@ -2,17 +2,17 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment.development';
 import { Observable } from 'rxjs';
-import { SearchResult, YoutubeSearchResponse } from '../Types/video';
+import { Video, YoutubeSearchResponse } from '../Types/video';
 
 @Injectable({
   providedIn: 'root',
 })
 export class VideoService {
   private http = inject(HttpClient);
-  private apiUrl = environment.URL_YOUTUBE
+  private apiUrl = environment.URL_YOUTUBE;
 
   searchVideos(query: string): Observable<YoutubeSearchResponse> {
-    return this.http.get<YoutubeSearchResponse>(this.apiUrl, {
+    return this.http.get<YoutubeSearchResponse>(this.apiUrl + 'search', {
       params: {
         part: 'snippet',
         q: query,
@@ -23,11 +23,13 @@ export class VideoService {
     });
   }
 
-  // getPosts(): Observable<SearchResult[]> {
-  //   return this.http.get<SearchResult[]>(this.apiUrl);
-  // }
-  //
-  // getPostById(id: number): Observable<SearchResult> {
-  //   return this.http.get<SearchResult>(`${this.apiUrl}/${id}`);
-  // }
+  findVideo(videoId: number): Observable<YoutubeSearchResponse> {
+    return this.http.get<YoutubeSearchResponse>(this.apiUrl + 'videos', {
+      params: {
+        part: 'snippet',
+        id: videoId,
+        key: environment.API_KEY,
+      },
+    });
+  }
 }
