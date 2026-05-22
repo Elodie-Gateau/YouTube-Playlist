@@ -46,3 +46,9 @@ export type YoutubeSearchResponse = {
 export type YoutubeVideoResponse = {
   items: VideoDetail[];
 };
+
+export type Playlist = {
+  name: string;
+  userId: string;
+  videos: VideoDetail[];
+}

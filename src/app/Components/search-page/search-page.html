@@ -11,30 +11,29 @@
 
 <div class="bg-white">
   <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-    <h2 class="text-2xl font-bold tracking-tight text-gray-900">Résultats</h2>
-    <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-  @for (result of results(); track result.id){
-      <div class="group relative">
-          <div>
-            <h3 class="text-sm text-gray-700">
-              <a (click)="navigateToVideo(result)" class="cursor-pointer">
-              <img [src]="result.snippet.thumbnails['medium'].url"
-                     [alt]="result.snippet.title"
-                     [width]="result.snippet.thumbnails['medium'].width"
-                     [height]="result.snippet.thumbnails['medium'].height"
-                     class="aspect-square w-full rounded-md bg-gray-200 object-cover group-hover:opacity-75 lg:aspect-auto lg:h-80" />
-                <div class="mt-4 flex justify-between">
-                  <span aria-hidden="true" class="absolute inset-0"></span>
-                {{ result.snippet.title }}
+    @if (results().length > 0){
+        <h2 class="text-2xl font-bold tracking-tight text-gray-900">Résultats</h2>
+        <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+        @for (result of results(); track result.id){
+          <div class="group relative">
+              <div class="flex flex-col justify-between h-full bg-neutral-primary-soft max-w-sm p-6 border border-default rounded-base shadow-xs hover:bg-neutral-secondary-medium">
+                  <a (click)="navigateToVideo(result)" class="cursor-pointer">
+                    <img [src]="result.snippet.thumbnails['medium'].url"
+                           [alt]="result.snippet.title"
+                           [width]="result.snippet.thumbnails['medium'].width"
+                           [height]="result.snippet.thumbnails['medium'].height"
+                           class="aspect-square w-full rounded-md bg-gray-200 object-cover group-hover:opacity-75 lg:aspect-auto lg:h-80" />
+                    <div class="mt-4 flex justify-between">{{ result.snippet.title }}</div>
+                  </a>
+                  <button (click)="addToPlaylist(result)" class="self-start inline-flex items-center text-white bg-brand box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">
+                    Ajouter
+                    <svg class="w-4 h-4 ms-1.5 rtl:rotate-180 -me-0.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4"/></svg>
+                  </button>
               </div>
-              </a>
-            </h3>
-            <p class="mt-1 text-sm text-gray-500"></p>
-          <p class="text-sm font-medium text-gray-900"></p>
-        </div>
+          </div>
+        }
       </div>
-  }
-    </div>
+    }
   </div>
 </div>
 

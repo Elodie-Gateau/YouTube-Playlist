@@ -3,10 +3,11 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { VideoService } from '../../Services/video-service';
 import { SearchResult } from '../../Types/video';
 import { Router, RouterLink } from '@angular/router';
+import { PlaylistService } from '../../Services/playlist-service';
 
 @Component({
   selector: 'app-search-page',
-  imports: [ReactiveFormsModule ],
+  imports: [ReactiveFormsModule],
   templateUrl: './search-page.html',
   styleUrl: './search-page.css',
 })
@@ -14,6 +15,7 @@ export class SearchPage {
   private fb = inject(FormBuilder);
   private router = inject(Router);
   videoService = inject(VideoService);
+  playlistService = inject(PlaylistService);
 
   results = signal<SearchResult[]>([]);
 
@@ -31,4 +33,8 @@ export class SearchPage {
   navigateToVideo(result: SearchResult) {
     this.router.navigate(['/video', result.id.videoId]);
   }
+
+  addToPlaylist(result: SearchResult):void {
+    this.playlistService.addVideoToPlaylist(result);
+  };
 }

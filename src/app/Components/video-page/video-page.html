@@ -1,28 +1,16 @@
 @if (video()) {
-  <div class="group relative">
-<!--  <img [src]="video()!.snippet.thumbnails['medium'].url"-->
-<!--       [alt]="video()!.snippet.title"-->
-<!--       [width]="video()!.snippet.thumbnails['medium'].width"-->
-<!--       [height]="video()!.snippet.thumbnails['medium'].height"-->
-<!--       class="aspect-square w-full rounded-md bg-gray-200 object-cover group-hover:opacity-75 lg:aspect-auto lg:h-80" />-->
-  <div class="mt-4 flex justify-between">
-    <div>
-      <h3 class="text-sm text-gray-700">
-        <iframe
-          [src]="'https://www.yout-ube.com/embed/' + video()!.id | safeUrl"
-          width="100%"
-          height="500"
-          frameborder="0"
-          allowfullscreen>
-        </iframe>
-          {{ video()!.snippet.title }}
-      </h3>
-      <p class="mt-1 text-sm text-gray-500"></p>
+  <div class="mt-4">
+    <div class="relative w-full" style="padding-bottom: 56.25%">
+      <iframe
+        [src]="'https://www.yout-ube.com/embed/' + video()!.id | safeUrl"
+        class="absolute top-0 left-0 w-full h-full"
+        frameborder="0"
+        allowfullscreen>
+      </iframe>
     </div>
-    <p class="text-sm font-medium text-gray-900"></p>
+      <h3 class="mt-2 text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl">{{ video()!.snippet.title }}</h3>
   </div>
-</div>
 } @else {
-  <p>Chargement...</p>
+  <p>Aucune vidéo</p>
 }
 

@@ -37,4 +37,16 @@ export class VideoService {
       },
     });
   }
+
+  convertSearchResultToVideoDetail(searchResult: SearchResult): VideoDetail {
+    return {
+      id: searchResult.id.videoId,
+      snippet: {
+        title: searchResult.snippet.title,
+        description: searchResult.snippet.description,
+        thumbnails: searchResult.snippet.thumbnails,
+        channelTitle: searchResult.snippet.channelTitle,
+      },
+    };
+  }
 }
