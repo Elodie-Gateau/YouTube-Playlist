@@ -5,7 +5,7 @@
       <svg class="w-4 h-4 text-body" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/></svg>
     </div>
     <input formControlName="searchQuery" type="search" id="search" class="block w-full p-3 ps-9 bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand shadow-xs placeholder:text-body" placeholder="Rechercher..." required />
-    <button (click)="onSubmit()" type="button" class="absolute end-1.5 bottom-1.5 text-white bg-brand hover:bg-brand-strong box-border border border-transparent focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded text-xs px-3 py-1.5 focus:outline-none">Rechercher</button>
+    <button (click)="onSubmit()" type="button" class="cursor-pointer absolute end-1.5 bottom-1.5 text-white bg-brand hover:bg-brand-strong box-border border border-transparent focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded text-xs px-3 py-1.5 focus:outline-none">Rechercher</button>
   </div>
 </form>
 
@@ -17,8 +17,8 @@
       <div class="group relative">
           <div>
             <h3 class="text-sm text-gray-700">
-              <a [routerLink]="['/video', result.id]">
-                <img [src]="result.snippet.thumbnails['medium'].url"
+              <a (click)="navigateToVideo(result)" class="cursor-pointer">
+              <img [src]="result.snippet.thumbnails['medium'].url"
                      [alt]="result.snippet.title"
                      [width]="result.snippet.thumbnails['medium'].width"
                      [height]="result.snippet.thumbnails['medium'].height"
@@ -35,8 +35,6 @@
       </div>
   }
     </div>
-
-
   </div>
 </div>
 

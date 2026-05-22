@@ -1,10 +1,8 @@
-export type Video = {
-  kind: string;
-  etag: string;
-  id: string;
+export type SearchResult = {
+  id: {
+    videoId: string;
+  };
   snippet: {
-    publishedAt: string;
-    channelId: string;
     title: string;
     description: string;
     thumbnails: {
@@ -18,18 +16,9 @@ export type Video = {
   };
 };
 
-export interface SearchResult {
-  kind: string;
-  etag: string;
-  id: {
-    kind: string;
-    videoId: string;
-    channelId: string;
-    playlistId: string;
-  };
+export type VideoDetail = {
+  id: string;
   snippet: {
-    publishedAt: string;
-    channelId: string;
     title: string;
     description: string;
     thumbnails: {
@@ -40,11 +29,10 @@ export interface SearchResult {
       };
     };
     channelTitle: string;
-    liveBroadcastContent: string;
   };
-}
+};
 
-export interface YoutubeSearchResponse {
+export type YoutubeSearchResponse = {
   kind: string;
   etag: string;
   nextPageToken?: string;
@@ -52,5 +40,9 @@ export interface YoutubeSearchResponse {
     totalResults: number;
     resultsPerPage: number;
   };
-  items: Video[];
-}
+  items: SearchResult[];
+};
+
+export type YoutubeVideoResponse = {
+  items: VideoDetail[];
+};
