@@ -1,13 +1,15 @@
 import { Injectable, signal, computed, inject } from '@angular/core';
 import { Registered, User } from '../Types/user';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private readonly currentUserSignal = signal<Partial<User> | null>(null);
-
+  private readonly http = inject(HttpClient);
   public isAuthenticated = computed(() => this.currentUserSignal() !== null);
 
   public currentUser = computed(() => this.currentUserSignal());
@@ -20,59 +22,54 @@ export class AuthService {
         const user = JSON.parse(storedUser);
         this.currentUserSignal.set(user);
       } catch (error) {
-        console.error("Erreur lors du parsing de l'utilisateur stocké:", error);
         localStorage.removeItem('currentUser');
       }
     }
   }
 
   login(email: string, password: string): void {
-    if (!this.validateCredentials(email, password)) {
-      return;
-    }
-    const storedUser = this.getStoredUsers().find((u) => u.email === email);
-
-    const user: Partial<User> = {
-      username: storedUser?.username,
-      email,
-      token: 'fake-jwt-token',
-    };
-
-    // Sauvegarde en sessionStorage
-    localStorage.setItem('currentUser', JSON.stringify(user));
-
-    // Remplacement avec le User courant
-    this.currentUserSignal.set(user);
+    this.http
+      .post<{
+        message: string;
+        token: string;
+        user: User;
+      }>(`${environment.API_URL}/users/login`, { email, password })
+      .subscribe({
+        next: (response) => {
+          const user: Partial<User> = {
+            username: response.user.username,
+            email: response.user.email,
+            token: response.token,
+          };
+          localStorage.setItem('currentUser', JSON.stringify(user));
+          this.currentUserSignal.set(user);
+          this.router.navigate(['/search']);
+        },
+        error: (err) => {
+          console.error('Erreur login:', err);
+        },
+      });
   }
 
   logout(): void {
-    // Suppression de la session
     localStorage.removeItem('currentUser');
-
-    // Mise à jour du signal
     this.currentUserSignal.set(null);
-
     this.router.navigate(['/auth', 'signIn']);
   }
 
-  register(userData: Registered): boolean {
-    const users = this.getStoredUsers();
-    users.push({
-      username: userData.username,
-      email: userData.email,
-      password: userData.password,
-    });
-    localStorage.setItem('users', JSON.stringify(users));
-    return true;
-  }
-
-  private getStoredUsers(): Registered[] {
-    const stored = localStorage.getItem('users');
-    return stored ? JSON.parse(stored) : [];
-  }
-
-  validateCredentials(email: string, password: string): boolean {
-    const users = this.getStoredUsers();
-    return users.some((user) => user.email === email && user.password === password);
+  register(userData: Registered): void {
+    console.log('données envoyées :', userData);
+    this.http
+      .post<{ message: string }>(`${environment.API_URL}/users/register`, userData)
+      .subscribe({
+        next: () => {
+          this.router.navigate(['/auth', 'signIn']);
+        },
+        error: (err) => {
+          console.error('Erreur register:', err);
+          console.error('Détail erreur:', err.error); // ← et ça
+          console.error('Erreurs validation:', err.error.errors);
+        },
+      });
   }
 }

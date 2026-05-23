@@ -36,7 +36,14 @@ export class AuthPage {
   registerForm = this.fb.group({
     username: ['', [Validators.required, Validators.minLength(2)]],
     email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(6)]],
+    password: [
+      '',
+      [
+        Validators.required,
+        Validators.minLength(8),
+        Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/),
+      ],
+    ],
   });
 
   private markFormGroupTouched(): void {
@@ -63,6 +70,9 @@ export class AuthPage {
       }
       if (field.errors['minlength']) {
         return `Minimum ${field.errors['minlength'].requiredLength} caractères`;
+      }
+      if (field.errors['pattern']) {
+        return 'Le mot de passe doit contenir au moins une minuscule, une majuscule et un chiffre';
       }
     }
 
